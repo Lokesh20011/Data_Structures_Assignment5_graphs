@@ -1,0 +1,51 @@
+#Count the number of nodes at given level in a tree using BFS
+from collections import defaultdict
+
+class Graph:
+    def __init__(self):
+        self.graph = defaultdict(list)
+    
+    def add_edge(self, u, v):
+        self.graph[u].append(v)
+    
+    def BFS(self, start, level):
+        visited = [False] * (max(self.graph) + 1)
+        queue = []
+        queue.append(start)
+        visited[start] = True
+        depth = 0
+        count = 0
+        
+        while queue:
+            if depth == level:
+                count += len(queue)
+            
+            if depth > level:
+                break
+            
+            num_nodes_at_this_level = len(queue)
+            
+            for _ in range(num_nodes_at_this_level):
+                node = queue.pop(0)
+                
+                for neighbor in self.graph[node]:
+                    if not visited[neighbor]:
+                        queue.append(neighbor)
+                        visited[neighbor] = True
+            
+            depth += 1
+        
+        return count
+
+# Usage example with user input:
+g = Graph()
+edges = int(input("Enter the number of edges: "))
+
+for _ in range(edges):
+    u, v = map(int, input("Enter an edge (u v): ").split())
+    g.add_edge(u, v)
+
+start_node = int(input("Enter the starting node for BFS: "))
+level = int(input("Enter the level to count nodes from: "))
+count = g.BFS(start_node, level)
+print(f"Number of nodes at level {level}: {count}")
