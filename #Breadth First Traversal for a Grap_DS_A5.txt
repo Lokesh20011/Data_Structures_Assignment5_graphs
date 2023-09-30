@@ -1,0 +1,33 @@
+#Breadth First Traversal for a Graph:
+class Graph:
+    def __init__(self):
+        self.graph = defaultdict(list)
+    
+    def add_edge(self, u, v):
+        self.graph[u].append(v)
+    
+    def BFS(self, start):
+        visited = [False] * (max(self.graph) + 1)
+        queue = []
+        queue.append(start)
+        visited[start] = True
+        
+        while queue:
+            node = queue.pop(0)
+            print(node, end=' ')
+            
+            for neighbor in self.graph[node]:
+                if not visited[neighbor]:
+                    queue.append(neighbor)
+                    visited[neighbor] = True
+
+# Usage example with user input:
+g = Graph()
+edges = int(input("Enter the number of edges: "))
+
+for _ in range(edges):
+    u, v = map(int, input("Enter an edge (u v): ").split())
+    g.add_edge(u, v)
+
+start_node = int(input("Enter the starting node for BFS: "))
+g.BFS(start_node)
