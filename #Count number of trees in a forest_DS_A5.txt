@@ -1,0 +1,38 @@
+#Count number of trees in a forest
+from collections import defaultdict
+
+class Graph:
+    def __init__(self):
+        self.graph = defaultdict(list)
+    
+    def add_edge(self, u, v):
+        self.graph[u].append(v)
+    
+    def count_trees(self):
+        visited = set()
+        count = 0
+        
+        for node in self.graph:
+            if node not in visited:
+                self.DFS_util(node, visited)
+                count += 1
+        
+        return count
+    
+    def DFS_util(self, node, visited):
+        visited.add(node)
+        
+        for neighbor in self.graph[node]:
+            if neighbor not in visited:
+                self.DFS_util(neighbor, visited)
+
+# Usage example with user input:
+g = Graph()
+edges = int(input("Enter the number of edges: "))
+
+for _ in range(edges):
+    u, v = map(int, input("Enter an edge (u v): ").split())
+    g.add_edge(u, v)
+
+count = g.count_trees()
+print(f"Number of trees in the forest: {count}")
